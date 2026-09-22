@@ -1,0 +1,15 @@
+node_modules
+dist
+dist-ssr
+*.local
+.vercel
+.DS_Store
+
+# Env: everything except the committed template.
+.env*
+!.env.example
+
+logs
+*.log
+npm-debug.log*
+.gstack/

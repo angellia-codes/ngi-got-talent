@@ -1,0 +1,14 @@
+{
+  "v": 3,
+  "layout": "files",
+  "createdOnFiles": {"v": 1, "at": "2026-09-22T00:00:00Z"},
+  "title": "Nourish GOT Talent Design System",
+  "namespace": "GOTTalent",
+  "libraries": [],
+  "sections": {},
+  "groups": [],
+  "assetGroups": {},
+  "blobs": {},
+  "docs": {"readme": "project/README.md", "sections": []},
+  "lastChange": {"by": "Angel", "via": "Claude chat", "at": "2026-09-22T00:00:00Z", "note": "Initial GOT Talent design system: color/glass tokens, typography, spacing, radius, motion and icon guidelines."}
+}
