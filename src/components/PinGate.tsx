@@ -110,7 +110,7 @@ export default function PinGate({
           autoComplete="off"
           value={pin}
           onChange={(e) => setPin(e.target.value)}
-          maxLength={20}
+          maxLength={4}
           placeholder="••••"
           className={inputClass + " mt-6 text-center tracking-[0.4em]"}
         />

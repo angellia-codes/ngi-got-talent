@@ -80,7 +80,8 @@ admin reads it through `admin_list_performances`.
 
 ### Setting the PINs
 
-The seed ships placeholder PINs of `000000`. **Change them before the event:**
+PINs are 4 digits — the gate accepts no more, and the seed ships placeholders
+of `0000`. **Change them before the event:**
 
 ```sql
 update private.app_secrets set value = '<admin pin>' where key = 'admin_pin';

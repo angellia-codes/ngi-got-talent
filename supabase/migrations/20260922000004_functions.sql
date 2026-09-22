@@ -26,7 +26,8 @@ begin
   end if;
 
   -- Crude anti-guessing delay, as in the Badminton Edge Function. A shared
-  -- 6-digit event PIN is brute-forceable in seconds without it.
+  -- 4-digit event PIN is 10,000 guesses; without this it falls in seconds,
+  -- with it a full sweep takes an hour and a half.
   perform pg_sleep(0.6);
   return false;
 end;

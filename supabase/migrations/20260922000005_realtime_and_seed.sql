@@ -29,10 +29,10 @@ insert into event_settings (id, leaderboard_state, judge_count)
 values (1, 'hidden', 3)
 on conflict (id) do nothing;
 
--- PLACEHOLDER PINS. These must be changed before the event:
+-- PLACEHOLDER PINS, 4 digits. These must be changed before the event:
 --   update private.app_secrets set value = '<pin>' where key = 'admin_pin';
 --   update private.app_secrets set value = '<pin>' where key = 'judge_pin';
 insert into private.app_secrets (key, value) values
-  ('admin_pin', '000000'),
-  ('judge_pin', '000000')
+  ('admin_pin', '0000'),
+  ('judge_pin', '0000')
 on conflict (key) do nothing;
