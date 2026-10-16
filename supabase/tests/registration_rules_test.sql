@@ -75,15 +75,20 @@ begin
   ---------------------------------------------------------------------- RPC
 
   -- The happy path, and the trimming the RPC is responsible for.
-  perform submit_registration('  Test Single  ', v_outlet, 'dance', null, 'single', null, null);
+  perform submit_registration('  Test Single  ', v_outlet, 'dance', null, 'single', null, null, true);
   select id into v_kept from performances where full_name = 'Test Single';
   if v_kept is null then
     raise exception 'REGRESSION: submit_registration did not trim full_name';
   end if;
 
+  -- The agreement is stamped by the server, not left null or taken from the caller.
+  if (select rules_agreed_at from performances where id = v_kept) is null then
+    raise exception 'REGRESSION: submit_registration did not record rules_agreed_at';
+  end if;
+
   -- The RPC must drop values whose field no longer applies rather than
   -- trusting the caller to have cleared them.
-  perform submit_registration('Test Stale', v_outlet, 'dance', 'ignored', 'single', 'ignored', 9);
+  perform submit_registration('Test Stale', v_outlet, 'dance', 'ignored', 'single', 'ignored', 9, true);
   if exists (
     select 1 from performances
     where full_name = 'Test Stale'
@@ -94,18 +99,41 @@ begin
 
   -- And it must reject what the form would have caught.
   begin
-    perform submit_registration('X', v_outlet, 'dance', null, 'single', null, null);
+    perform submit_registration('X', v_outlet, 'dance', null, 'single', null, null, true);
     raise exception 'REGRESSION: submit_registration accepted a 1-character name';
   exception when raise_exception then
     if sqlerrm like 'REGRESSION%' then raise; end if;
   end;
 
   begin
-    perform submit_registration('Test Group', v_outlet, 'dance', null, 'group', 'The Twos', 2);
+    perform submit_registration('Test Group', v_outlet, 'dance', null, 'group', 'The Twos', 2, true);
     raise exception 'REGRESSION: submit_registration accepted a group of 2';
   exception when raise_exception then
     if sqlerrm like 'REGRESSION%' then raise; end if;
   end;
+
+  -- No agreement, no registration — and null counts as no.
+  begin
+    perform submit_registration('Test No Rules', v_outlet, 'dance', null, 'single', null, null, false);
+    raise exception 'REGRESSION: submit_registration accepted a registration without agreeing to the rules';
+  exception when raise_exception then
+    if sqlerrm like 'REGRESSION%' then raise; end if;
+  end;
+
+  begin
+    perform submit_registration('Test Null Rules', v_outlet, 'dance', null, 'single', null, null, null);
+    raise exception 'REGRESSION: submit_registration accepted a null rules agreement';
+  exception when raise_exception then
+    if sqlerrm like 'REGRESSION%' then raise; end if;
+  end;
+
+  -- The old 7-argument signature must be gone, or it is a way around the agreement.
+  if exists (
+    select 1 from pg_proc
+    where proname = 'submit_registration' and pronargs = 7
+  ) then
+    raise exception 'REGRESSION: the 7-argument submit_registration still exists';
+  end if;
 
   ------------------------------------------------------------- one on stage
 

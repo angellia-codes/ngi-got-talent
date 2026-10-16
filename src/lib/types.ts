@@ -22,6 +22,8 @@ export type Performance = {
   performer_count: number | null;
   running_order: number | null;
   status: PerformanceStatus;
+  // Null for registrations made before the rules were added to the form.
+  rules_agreed_at: string | null;
   created_at: string;
 };
 
