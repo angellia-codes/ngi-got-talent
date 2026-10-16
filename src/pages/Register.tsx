@@ -12,6 +12,15 @@ import {
   type PerformerType,
 } from "../lib/types.ts";
 
+const RULES = [
+  "Each performance must not exceed 5 minutes, including the introduction and closing.",
+  "Participants must submit their performance concept, music, and technical requirements before the deadline.",
+  "All music tracks and supporting materials must be provided in the required format and tested before the event.",
+  "Participants must arrive at the designated backstage area at least 30 minutes before their scheduled performance.",
+  "Participants must follow the performance sequence determined by the organizer.",
+  "Props, costumes, and equipment must be prepared by the participants unless otherwise agreed with the organizer.",
+];
+
 export default function Register() {
   const [outlets, setOutlets] = useState<Outlet[]>([]);
 
@@ -22,6 +31,7 @@ export default function Register() {
   const [performerType, setPerformerType] = useState<PerformerType | "">("");
   const [actName, setActName] = useState("");
   const [performerCount, setPerformerCount] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,6 +70,7 @@ export default function Register() {
       if (!Number.isInteger(count) || count < 3)
         return "A group needs at least 3 performers, so pick Duo for two.";
     }
+    if (!agreed) return "Please read and agree to the Rules & Regulations.";
     return null;
   }
 
@@ -227,6 +238,40 @@ export default function Register() {
             />
           </Field>
         </Reveal>
+
+        <section aria-labelledby="rulesHeading" className="mt-6 border-t border-glass-border pt-6">
+          <h2
+            id="rulesHeading"
+            className="mb-3 font-sans text-caption font-semibold uppercase tracking-wider text-text-on-glass/75"
+          >
+            Rules &amp; Regulations
+          </h2>
+          <ol className="list-decimal space-y-2 rounded-button border border-glass-border bg-glass-standard py-4 pl-8 pr-4 font-sans text-caption leading-relaxed text-text-on-glass/85 marker:text-text-on-glass/50">
+            {RULES.map((rule) => (
+              <li key={rule}>{rule}</li>
+            ))}
+          </ol>
+
+          <label htmlFor="agree" className="mt-4 flex cursor-pointer items-start gap-3">
+            <input
+              id="agree"
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              className="peer sr-only"
+            />
+            {/* Gold only as a solid fill once ticked (design guide). */}
+            <span
+              aria-hidden="true"
+              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-[4px] border border-glass-border bg-glass-standard transition-colors peer-checked:border-gold peer-checked:bg-gold peer-focus-visible:ring-2 peer-focus-visible:ring-gold-light"
+            >
+              {agreed && <Check size={14} strokeWidth={3} className="text-bg-base" />}
+            </span>
+            <span className="font-sans text-body text-text-on-glass">
+              I have read and agree to the Rules &amp; Regulations of Nourish GOT Talent.
+            </span>
+          </label>
+        </section>
 
         <AnimatePresence>
           {error && (
