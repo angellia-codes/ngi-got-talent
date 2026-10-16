@@ -35,9 +35,11 @@ npm run dev
 
 | Route | Who | Access | Holds |
 |---|---|---|---|
-| `/` | Participants | Public, no login | The registration form |
+| `/` | Everyone | Public, no login | Landing page linking to every screen |
+| `/register` | Participants | Public, no login | The registration form |
 | `/admin` | Admin | Admin PIN | Running order, stage advance, leaderboard state, judge count, ties, score unlock |
 | `/judge` | Judges | Judge PIN, then a judge slot | The rubric for whatever act is on stage |
+| `/stage` | Everyone | Public, no login | The projector screen: whichever act is on stage, live |
 | `/leaderboard` | Everyone | Public, gated by leaderboard state | The big-screen standings and reveal |
 
 ## How access works
@@ -168,9 +170,11 @@ src/
     supabase.ts              the client
     types.ts                 hand-written row types, mirroring the DB enums
   pages/
+    Home.tsx                 the landing page, one card per screen
     Register.tsx             the public registration form
     Admin.tsx                stage management
     Judge.tsx                slot picker + rubric
+    Stage.tsx                projector display of the act on stage
     Leaderboard.tsx          standings and the reveal
 supabase/
   migrations/                one concern per file, applied in order
