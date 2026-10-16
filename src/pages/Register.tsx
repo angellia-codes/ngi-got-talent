@@ -92,6 +92,7 @@ export default function Register() {
       p_performer_type: performerType,
       p_act_name: performerType === "single" ? null : actName,
       p_performer_count: performerType === "group" ? Number(performerCount) : null,
+      p_agreed_to_rules: agreed,
     });
 
     setSubmitting(false);

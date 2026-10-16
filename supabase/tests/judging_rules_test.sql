@@ -53,7 +53,7 @@ begin
   -- 15 on every active criterion: a valid, complete rubric.
   select jsonb_object_agg(id::text, 15) into v_points from criteria where is_active;
 
-  perform submit_registration('Judge Test Act', v_outlet, 'band', null, 'group', 'Test Band', 4);
+  perform submit_registration('Judge Test Act', v_outlet, 'band', null, 'group', 'Test Band', 4, true);
   select id into v_act from performances where full_name = 'Judge Test Act';
 
   ---------------------------------------------------------------------- PINs

@@ -61,7 +61,7 @@ the owner and is unaffected by either lock:
 
 | Function | Callable by | Does |
 |---|---|---|
-| `submit_registration(...)` | anyone | Validates and inserts a registration, returns its reference code |
+| `submit_registration(...)` | anyone | Validates and inserts a registration, stamps `rules_agreed_at`, returns its reference code |
 | `verify_pin(pin, role)` | anyone | Checks a PIN against `private.app_secrets` for role `admin` or `judge` |
 | `admin_list_performances(pin)` | Admin PIN | The full roster, including the `not_started` rows anon cannot see, with per-judge totals |
 | `admin_set_running_order(pin, ids)` | Admin PIN | Writes `running_order` 1..n from the whole ordered array |
@@ -102,6 +102,18 @@ Six fields (PRD §6.1), three of which appear conditionally:
 Those rules are enforced three times: in the form, in `submit_registration`,
 and as `CHECK` constraints on the table. A registration that breaks one is
 rejected whether it arrives from the UI, the RPC, or the Supabase dashboard.
+
+Below the fields sit the event's Rules & Regulations and an agreement
+checkbox. Registration is refused until it is ticked, in the form and again in
+`submit_registration`, which also writes the server's time to
+`performances.rules_agreed_at`. That column is the record HR points to if a
+rule is broken. It is null for anyone who registered before the rules were
+added, since they never saw them. To pull the record:
+
+```sql
+select reference_code, full_name, act_name, rules_agreed_at
+from performances order by created_at;
+```
 
 On submit the participant gets a reference code — `GT-001`, `GT-002`, … from a
 Postgres sequence. Codes can have gaps: `nextval` is not transactional, so a

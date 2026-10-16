@@ -38,8 +38,8 @@ begin
 
   -- Two acts to move around. Created through the public RPC so they land in
   -- exactly the state a real registration does: not_started, no running order.
-  perform submit_registration('Admin Test A', v_outlet, 'dance', null, 'single', null, null);
-  perform submit_registration('Admin Test B', v_outlet, 'sing', null, 'duo', 'Test Duo', null);
+  perform submit_registration('Admin Test A', v_outlet, 'dance', null, 'single', null, null, true);
+  perform submit_registration('Admin Test B', v_outlet, 'sing', null, 'duo', 'Test Duo', null, true);
   select id into v_a from performances where full_name = 'Admin Test A';
   select id into v_b from performances where full_name = 'Admin Test B';
 
