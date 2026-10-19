@@ -12,6 +12,15 @@ import {
   type PerformerType,
 } from "../lib/types.ts";
 
+const RULES = [
+  "Each performance must not exceed 5 minutes, including the introduction and closing.",
+  "Participants must submit their performance concept, music, and technical requirements before the deadline.",
+  "All music tracks and supporting materials must be provided in the required format and tested before the event.",
+  "Participants must arrive at the designated backstage area at least 30 minutes before their scheduled performance.",
+  "Participants must follow the performance sequence determined by the organizer.",
+  "Props, costumes, and equipment must be prepared by the participants unless otherwise agreed with the organizer.",
+];
+
 export default function Register() {
   const [outlets, setOutlets] = useState<Outlet[]>([]);
 
@@ -22,6 +31,7 @@ export default function Register() {
   const [performerType, setPerformerType] = useState<PerformerType | "">("");
   const [actName, setActName] = useState("");
   const [performerCount, setPerformerCount] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,6 +70,7 @@ export default function Register() {
       if (!Number.isInteger(count) || count < 3)
         return "A group needs at least 3 performers, so pick Duo for two.";
     }
+    if (!agreed) return "Please read and agree to the Rules & Regulations.";
     return null;
   }
 
@@ -227,6 +238,38 @@ export default function Register() {
             />
           </Field>
         </Reveal>
+
+        <section aria-labelledby="rules" className="mt-6 border-t border-glass-border pt-6">
+          <h2
+            id="rules"
+            className="font-sans text-caption font-semibold uppercase tracking-wider text-text-on-glass/75"
+          >
+            Rules &amp; Regulations
+          </h2>
+          <ol className="mt-3 space-y-2.5 rounded-button border border-glass-border bg-glass-standard p-4">
+            {RULES.map((rule, i) => (
+              <li key={rule} className="flex gap-3 font-sans text-caption leading-relaxed text-text-on-glass/85">
+                <span className="w-4 shrink-0 font-heavy text-gold">{i + 1}</span>
+                <span>{rule}</span>
+              </li>
+            ))}
+          </ol>
+
+          <label className="mt-4 flex min-h-11 cursor-pointer items-start gap-3 font-sans text-body text-text-on-glass">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              className="mt-0.5 size-5 shrink-0 cursor-pointer accent-gold"
+            />
+            <span>
+              I have read and agree to the Rules &amp; Regulations
+              {performerType === "duo" || performerType === "group"
+                ? ", on behalf of everyone in my act."
+                : "."}
+            </span>
+          </label>
+        </section>
 
         <AnimatePresence>
           {error && (
