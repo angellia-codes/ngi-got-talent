@@ -14,11 +14,11 @@ import {
 
 const RULES = [
   "Each performance must not exceed 5 minutes, including the introduction and closing.",
-  "Participants must submit their performance concept, music, and technical requirements before the deadline.",
+  "Participants must submit their performance concept, music, and technical requirements before the 5 December 2026.",
   "All music tracks and supporting materials must be provided in the required format and tested before the event.",
   "Participants must arrive at the designated backstage area at least 30 minutes before their scheduled performance.",
   "Participants must follow the performance sequence determined by the organizer.",
-  "Props, costumes, and equipment must be prepared by the participants unless otherwise agreed with the organizer.",
+  "Props, costumes, and equipment must be prepared by the participants.",
 ];
 
 export default function Register() {
