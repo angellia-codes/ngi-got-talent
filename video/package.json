@@ -1,0 +1,22 @@
+{
+  "name": "ngi-got-talent-reel",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Reel out/reel-16x9.mp4",
+    "still": "remotion still src/index.ts Reel",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.539",
+    "@remotion/google-fonts": "4.0.539",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "remotion": "4.0.539"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "typescript": "~6.0.2"
+  }
+}

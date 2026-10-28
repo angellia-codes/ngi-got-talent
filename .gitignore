@@ -13,3 +13,6 @@ logs
 *.log
 npm-debug.log*
 .gstack/
+
+# Remotion reel: renders are rebuilt with `npm run render` in video/.
+video/out
